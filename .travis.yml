@@ -53,3 +53,4 @@ branches:
     - master
     - 2.x
     - 3.x
+    - 3.x-multiple
