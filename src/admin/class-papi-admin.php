@@ -75,13 +75,13 @@ final class Papi_Admin {
 	 * @return string
 	 */
 	public function admin_body_class( $classes ) {
-		$classes .= sprintf( ' papi-meta-type-%s', papi_get_meta_type() );
-
-		if ( ! in_array( $this->post_type, papi_get_post_types() ) ) {
-			return $classes;
-		}
-
 		if ( $entry_type = $this->get_entry_type() ) {
+			$classes .= sprintf( ' papi-body papi-meta-type-%s', papi_get_meta_type() );
+
+			if ( ! in_array( $this->post_type, papi_get_post_types() ) ) {
+				return $classes;
+			}
+
 			$arr = $entry_type->get_body_classes();
 			$arr = is_string( $arr ) ? [$arr] : $arr;
 			$arr = is_array( $arr ) ? $arr : [];
