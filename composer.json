@@ -1,5 +1,5 @@
 {
-  "name": "wp-papi/papi",
+  "name": "isotopsweden/papi",
   "type": "wordpress-plugin",
   "license": "MIT",
   "description": "WordPress Page Type API with custom fields",
