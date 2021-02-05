@@ -43,18 +43,27 @@ class Papi_Property_File extends Papi_Property {
 
 		// Single file.
 		if ( is_numeric( $value ) ) {
-			$meta = (array) wp_get_attachment_metadata( $value );
+			$meta = wp_get_attachment_metadata( $value );
+
+			if ( $meta === false ) {
+				$meta = [];
+			}
 
 			$alt = get_post_meta( $value, '_wp_attachment_image_alt', true );
 
 			$att  = get_post( $value );
+
+			if ( is_null( $att ) ) {
+				return (int) $value;
+			}
+
 			$mine = [
 				'alt'         => trim( wp_strip_all_tags( $alt ? $alt : '' ) ),
-				'caption'     => trim( wp_strip_all_tags( $att->post_excerpt ) ),
-				'description' => trim( wp_strip_all_tags( $att->post_content ) ),
+				'caption'     => trim( wp_strip_all_tags( isset( $att->post_excerpt ) ? $att->post_excerpt : '' ) ),
+				'description' => trim( wp_strip_all_tags( isset( $att->post_content ) ? $att->post_content : '' ) ),
 				'id'          => intval( $value ),
 				'is_image'    => (bool) wp_attachment_is_image( $value ),
-				'title'       => esc_html( $att->post_title ),
+				'title'       => esc_html( isset( $att->post_title ) ? $att->post_title : '' ),
 				'url'         => wp_get_attachment_url( $value ),
 			];
 
@@ -70,7 +79,7 @@ class Papi_Property_File extends Papi_Property {
 			$value = (object) array_merge( $meta, $mine );
 
 			if ( ! papi_is_admin() && $this->get_setting( 'fields' ) === 'ids' ) {
-				return $this->get_file_value( $value );
+				return $att->ID;
 			}
 
 			return $value;
